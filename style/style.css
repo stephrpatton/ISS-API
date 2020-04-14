@@ -1,0 +1,35 @@
+body {
+  background-image: url(../img/main_background.jpg);
+  background-position: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+li {
+  list-style: none;
+}
+
+#main {
+  margin: 10rem auto;
+  width: 90vw;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.current_location {
+  display: none;
+}
+
+.current_location p {
+  padding: 1rem;
+}
+
+input {
+  border: 2px red solid;
+}
+
+.display_location {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
