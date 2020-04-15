@@ -13,9 +13,10 @@ const numOfPasses = document.querySelector(".num_1");
 const numOfPeople = document.querySelector(".num_2");
 const getPeopleList = document.querySelector(".people_list");
 const showLocationList = document.querySelector(".place_list");
+const loader = document.querySelector(".loader");
 
 // create map
-const map = L.map("map").setView([0, 0], 2);
+const map = L.map("map").setView([0, 0], 3);
 const attribution =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
@@ -67,15 +68,16 @@ const showLocation = async () => {
 const createList = newLi => {
   const list = document.createElement("li");
   list.appendChild(document.createTextNode(newLi));
-  console.log(newLi);
+  console.log(list);
   return list;
 };
 
 // show location for specific place
 const displayPlaces = async () => {
   const place = await showPlace();
-  console.log(place.data);
+  console.log(place);
   numOfPasses.appendChild(document.createTextNode(place.data.request.passes));
+  loader.style.display = "none";
   place.data.response.forEach(d => {
     let date = new Date(d.risetime * 1000);
     showLocationList.appendChild(createList(date));
@@ -86,8 +88,8 @@ const displayPlaces = async () => {
 const showPeople = async () => {
   const names = await getPeople();
   numOfPeople.appendChild(document.createTextNode(names.data.number));
-  names.data.people.forEach(name => {
-    getPeopleList.appendChild(createList(name.name));
+  names.data.people.forEach(n => {
+    getPeopleList.appendChild(createList(n.name));
   });
 };
 

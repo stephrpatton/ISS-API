@@ -7,6 +7,19 @@ body {
 
 li {
   list-style: none;
+  font-size: 1.5rem;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+.current_location,
+.show_location {
+  width: 80%;
+  margin: 0 auto;
+  border-bottom: solid rgba(128, 128, 128, 0.596) 2px;
+  padding-bottom: 1rem;
 }
 
 #main {
@@ -14,15 +27,24 @@ li {
   width: 90vw;
   text-align: center;
   background: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
 }
 
 #map {
-  height: 200px;
+  height: 300px;
+  border-radius: 10px;
 }
 
-input {
-  border: 2px red solid;
+span {
+  padding-right: 0.5rem;
+  color: blue;
 }
+
+.people {
+  padding-bottom: 1rem;
+}
+
+/* Javascript classes*/
 
 .display_location {
   display: flex;
@@ -30,7 +52,7 @@ input {
   align-content: center;
 }
 
-span {
-  padding-right: 0.5rem;
-  color: blue;
+.loader {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
