@@ -16,12 +16,8 @@ li {
   background: rgba(255, 255, 255, 0.7);
 }
 
-.current_location {
-  display: none;
-}
-
-.current_location p {
-  padding: 1rem;
+#map {
+  height: 200px;
 }
 
 input {
@@ -32,4 +28,9 @@ input {
   display: flex;
   justify-content: center;
   align-content: center;
+}
+
+span {
+  padding-right: 0.5rem;
+  color: blue;
 }

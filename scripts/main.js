@@ -1,20 +1,30 @@
 const axios = require("axios");
 require("babel-polyfill");
-const cors = require("cors");
+const L = require("leaflet");
 
 // URLS
 const get_location_url = "http://api.open-notify.org/iss-now.json";
-const get_people_url = "http://api.open-notify.org/astros.json";
 const post_location_url =
-  "http://api.open-notify.org/iss-pass.json?lat=LAT&lon=LON";
+  "https://cors-anywhere.herokuapp.com/http://api.open-notify.org/iss-pass.json?lat=52.516045&lon=13.396610";
+const get_people_url = "http://api.open-notify.org/astros.json";
 
 // Elements
-const location_div = document.querySelector(".current_location");
-const getLatitude = document.getElementById("lat");
-const getLongitude = document.getElementById("long");
-const btn_location = document.querySelector(".current_location-btn");
+const numOfPasses = document.querySelector(".num_1");
+const numOfPeople = document.querySelector(".num_2");
 const getPeopleList = document.querySelector(".people_list");
-const form = document.querySelector("form");
+const showLocationList = document.querySelector(".place_list");
+
+// create map
+const map = L.map("map").setView([0, 0], 2);
+const attribution =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+const tiles = L.tileLayer(tileUrl, { attribution });
+tiles.addTo(map);
+
+const marker = L.marker([0, 0]).addTo(map);
+
 // get data
 const getLocation = async () => {
   try {
@@ -23,11 +33,10 @@ const getLocation = async () => {
     console.error(error);
   }
 };
-
-// post location
-const postLocation = async () => {
+// get data
+const showPlace = async () => {
   try {
-    return await axios.post(post_location_url);
+    return await axios.get(post_location_url);
   } catch (error) {
     console.error(error);
   }
@@ -45,58 +54,44 @@ const getPeople = async () => {
 // display data
 const showLocation = async () => {
   const location = await getLocation();
-  if (location.data) {
-    let latitude = document.createTextNode(location.data.iss_position.latitude);
-    let longitude = document.createTextNode(
-      location.data.iss_position.longitude
-    );
+  let latitude = location.data.iss_position.latitude;
+  let longitude = location.data.iss_position.longitude;
 
-    btn_location.addEventListener("click", () => {
-      location_div.classList.toggle("display_location");
-      getLatitude.appendChild(latitude);
-      getLongitude.appendChild(longitude);
-    });
-  } else {
-    let load = document.createTextNode("Loading..");
-    load.appendChild(getLatitude);
+  if (location.data) {
+    map.setView([latitude, longitude], map.getZoom());
+    marker.setLatLng([latitude, longitude]);
   }
 };
 
-// post location to get timestamp
-// const giveLocation = form.addEventListener("submit", async e => {
-//   e.preventDefault();
-
-//   const latitude = document.querySelector("#latitudeForm");
-//   const longitude = document.querySelector("#longitudeForm");
-//   const altitude = document.querySelector("#altitudeForm");
-
-//   const data = {
-//     lat: latitude,
-//     lon: longitude,
-//     altitude
-//   };
-//   console.log(data);
-//   postLocation(data).use(cors());
-// });
-
-// create list of li for people
-const createList = person => {
+// create list of li
+const createList = newLi => {
   const list = document.createElement("li");
-  list.appendChild(document.createTextNode(person.name));
+  list.appendChild(document.createTextNode(newLi));
+  console.log(newLi);
   return list;
+};
+
+// show location for specific place
+const displayPlaces = async () => {
+  const place = await showPlace();
+  console.log(place.data);
+  numOfPasses.appendChild(document.createTextNode(place.data.request.passes));
+  place.data.response.forEach(d => {
+    let date = new Date(d.risetime * 1000);
+    showLocationList.appendChild(createList(date));
+  });
 };
 
 // show people in space
 const showPeople = async () => {
   const names = await getPeople();
-  console.log(names.data);
-  if (Array.isArray(names.data.people) && names.data.people.length > 0) {
-    names.data.people.map(name => {
-      getPeopleList.appendChild(createList(name));
-    });
-  }
+  numOfPeople.appendChild(document.createTextNode(names.data.number));
+  names.data.people.forEach(name => {
+    getPeopleList.appendChild(createList(name.name));
+  });
 };
 
 // run all functions
-showLocation();
+setInterval(showLocation, 1000);
+displayPlaces();
 showPeople();

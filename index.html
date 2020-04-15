@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    />
     <link rel="stylesheet" href="style/style.css" />
     <title>ISS API Application</title>
   </head>
@@ -11,26 +15,18 @@
     <div id="main">
       <h1>International Space Station:</h1>
       <div>
-        <button class="btn current_location-btn">Get Current Location</button>
         <div class="current_location">
-          <p id="lat">Latitude:</p>
-          <p id="long">Longitude:</p>
+          <h2>Current Location</h2>
+          <div id="map"></div>
         </div>
-        <div class="get_location">
-          <form action="#">
-            <label for="latitudeForm">Enter Latitude:</label>
-            <input type="number" id="latitudeForm" required />
-            <label for="longitudeForm">Enter Longitude:</label>
-            <input type="number" id="longitudeForm" required />
-            <label for="altitudeForm">Enter Altitude:</label>
-            <input type="number" id="altitudeForm" />
-            <button class="btn get_location-btn" type="submit">
-              Get Location
-            </button>
-          </form>
+        <div class="show_location">
+          <h2>Will Pass over Berlin <span class="num_1"></span></h2>
+          <ul class="place_list"></ul>
         </div>
         <div class="people">
-          <h3>People Currently In Space</h3>
+          <h2>
+            There are <span class="num_2"></span>People Currently In Space
+          </h2>
           <ul class="people_list"></ul>
         </div>
       </div>
